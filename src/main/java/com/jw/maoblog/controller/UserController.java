@@ -1,6 +1,8 @@
 package com.jw.maoblog.controller;
 
+import com.jw.maoblog.domain.Authority;
 import com.jw.maoblog.domain.User;
+import com.jw.maoblog.service.AuthorityService;
 import com.jw.maoblog.service.UserService;
 import com.jw.maoblog.util.ConstraintViolationExceptionHandler;
 import com.jw.maoblog.vo.Response;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,6 +25,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthorityService authorityService;
 
     /**
      * return all list of all users.
@@ -66,7 +72,11 @@ public class UserController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Response> saveOrUpdateUser(User user) {
+    public ResponseEntity<Response> saveOrUpdateUser(User user, Long authorityId) {
+        List<Authority> authorities =new ArrayList<>();
+        authorities.add(authorityService.getAuthorityById(authorityId));
+        user.setAuthorities(authorities);
+
         try {
             userService.saveOrUpdateUser(user);
         } catch (ConstraintViolationException e) {
