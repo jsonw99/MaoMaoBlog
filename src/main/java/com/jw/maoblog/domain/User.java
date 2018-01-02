@@ -1,65 +1,109 @@
 package com.jw.maoblog.domain;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.util.Collection;
 
 @Entity
-public class User implements UserDetails, Serializable{
+public class User {
     private static final long serialVersionId = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto generate id
     private long id;
 
     @NotEmpty(message = "name cannot be empty.")
+    @Size(min=5, max=20)
+    @Column(nullable = false, length=20) // cannot be empty, max long 20.
+    private String name;
+
+    @NotEmpty(message = "email cannot be empty.")
     @Size(max=50)
+    @Email(message="please input an valid email.")
+    @Column(nullable = false, length = 50, unique = true)
+    private String email;
 
+    @NotEmpty(message = "username cannot be empty.")
+    @Size(min=3, max=20)
+    @Column(nullable = false, length = 20, unique = true)
+    private String username; // the login name.
 
+    @NotEmpty(message = "password cannot be empty.")
+    @Size(max=100)
+    @Column(length = 100)
+    private String password; // the login key.
 
+    @Column(length = 200)
+    private String avatar; // the path to the user image.
 
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public User() {
     }
 
-    @Override
-    public String getPassword() {
-        return null;
+    public User(String name, String email, String username, String password) {
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
     }
 
-    @Override
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getUsername() {
-        return null;
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
