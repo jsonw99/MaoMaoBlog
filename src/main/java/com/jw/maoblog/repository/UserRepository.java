@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * User Repository
+ * User Repository interface
  */
 public interface UserRepository extends JpaRepository<User, Long>{
     /**
@@ -26,4 +26,11 @@ public interface UserRepository extends JpaRepository<User, Long>{
      * @return
      */
     User findByUsername(String username);
+
+    /**
+     * return user list matches the usernames collection.
+     * @param usernames
+     * @return
+     */
+    List<User> findByUsernameIn(Collection<String> usernames);
 }

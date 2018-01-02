@@ -4,10 +4,8 @@ import com.jw.maoblog.domain.Authority;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-
 /**
- * Authority repository.
- *
+ * Authority repository. *
  */
-public interface AuthorityRepository extends JpaRepository<Authority, Long>{
+public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 }

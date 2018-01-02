@@ -10,19 +10,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class User implements UserDetails{
+public class User implements UserDetails, Serializable{
     private static final long serialVersionId = 1L;
 
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto generate id
     private long id;
 
-    @NotEmpty(message = "name cannot be empty.")
+    @NotEmpty(message = "nickname cannot be empty.")
     @Size(min=5, max=20)
     @Column(nullable = false, length=20) // cannot be empty, max long 20.
     private String name;
@@ -51,7 +52,7 @@ public class User implements UserDetails{
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
 
-    public User() {
+    protected User() {
     }
 
     public User(String name, String email, String username, String password) {

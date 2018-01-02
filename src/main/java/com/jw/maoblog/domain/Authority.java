@@ -16,8 +16,8 @@ public class Authority implements GrantedAuthority{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false) // the field cannot be null.
+    private String name; // name of the user type, e.g. admin or normal-user.
 
     public Long getId() {
         return id;
@@ -27,11 +27,6 @@ public class Authority implements GrantedAuthority{
         this.id = id;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.springframework.security.core.GrantedAuthority#getAuthority()
-     */
     @Override
     public String getAuthority() {
         return name;

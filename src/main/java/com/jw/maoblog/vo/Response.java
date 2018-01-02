@@ -1,7 +1,7 @@
 package com.jw.maoblog.vo;
 
 /**
- * the query returned object.
+ * the value object of Response, for the html query, as the return.
  */
 public class Response {
     private boolean success; // if the query is success

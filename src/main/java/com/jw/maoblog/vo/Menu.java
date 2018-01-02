@@ -2,6 +2,7 @@ package com.jw.maoblog.vo;
 
 /**
  * the menu for backend management.
+ * future expansion can be done from here.
  */
 public class Menu {
     private String name; // the name of the function.
@@ -28,3 +29,4 @@ public class Menu {
         this.url = url;
     }
 }
+
