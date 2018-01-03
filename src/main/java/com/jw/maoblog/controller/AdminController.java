@@ -10,11 +10,15 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AAdmin Controller.
+ */
 @Controller
 @RequestMapping("/admins")
 public class AdminController {
     /**
      * return the home page of the backend management system.
+     *
      * @param model
      * @return
      */

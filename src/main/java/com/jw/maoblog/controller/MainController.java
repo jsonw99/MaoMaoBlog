@@ -36,7 +36,7 @@ public class MainController {
 
     @GetMapping("/index")
     public String index() {
-        return "index";
+        return "redirect:/blogs";
     }
 
     @GetMapping("/login")
@@ -67,8 +67,12 @@ public class MainController {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(authorityService.getAuthorityById(ROLE_USER_AUTHORITY_ID));
         user.setAuthorities(authorities);
-        userService.registerUser(user);
-        return "rediect:/login";
+        userService.saveUser(user);
+        return "redirect:/login";
     }
 
+    @GetMapping("/search")
+    public String search() {
+        return "search";
+    }
 }

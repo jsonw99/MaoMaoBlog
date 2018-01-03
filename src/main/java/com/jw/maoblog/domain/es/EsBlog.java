@@ -19,7 +19,7 @@ import org.springframework.data.elasticsearch.annotations.FieldIndex;
 public class EsBlog implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id // 主键
+    @Id
     private String id;
     @Field(index = FieldIndex.not_analyzed) // not a full text search field.
     private Long blogId; // same id

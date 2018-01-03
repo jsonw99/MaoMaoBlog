@@ -40,20 +40,20 @@ public interface UserService {
     User updateUser(User user);
 
     /**
-     * 根据id获取用户
+     * get user by userId
      * @param id
      * @return
      */
     User getUserById(Long id);
 
     /**
-     * 获取用户列表
+     * return the list of all users
      * @return
      */
     List<User> listUsers();
 
     /**
-     * 根据用户名进行分页模糊查询
+     * return the list of users based on the fuzzy search query.
      * @param name
      * @param pageable
      * @return
@@ -61,7 +61,7 @@ public interface UserService {
     Page<User> listUsersByNameLike(String name, Pageable pageable);
 
     /**
-     * 更具名称列表查询
+     * return the list of users matches the given usernames collection.
      * @param usernames
      * @return
      */

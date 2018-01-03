@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,10 +22,14 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * User Controller.
+ */
 @RestController
 @RequestMapping("/users")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")  // only the Admin can access the page.
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -30,7 +37,7 @@ public class UserController {
     private AuthorityService authorityService;
 
     /**
-     * return all list of all users.
+     * get all Users.
      *
      * @param async
      * @param pageIndex
@@ -45,51 +52,71 @@ public class UserController {
                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                              @RequestParam(value = "name", required = false, defaultValue = "") String name,
                              Model model) {
+
         Pageable pageable = new PageRequest(pageIndex, pageSize);
         Page<User> page = userService.listUsersByNameLike(name, pageable);
         List<User> list = page.getContent();
+
         model.addAttribute("page", page);
         model.addAttribute("userList", list);
-        return new ModelAndView(async ? "users/list :: #mainContainerRepleace" : "users/list", "userModel", model);
+        // if sync (first time visit) then load the whole page, otherwise, only reload the certain <div>.
+        return new ModelAndView(async == true ? "users/list :: #mainContainerRepleace" : "users/list", "userModel", model);
     }
 
     /**
-     * the page to create a new user.
+     * get the creation form.
      *
      * @param model
      * @return
      */
-    @GetMapping(value = "/add")
+    @GetMapping("/add")
     public ModelAndView createForm(Model model) {
         model.addAttribute("user", new User(null, null, null, null));
         return new ModelAndView("users/add", "userModel", model);
     }
 
     /**
-     * save or update the user.
+     * create the new user.
      *
      * @param user
+     * @param authorityId
      * @return
      */
     @PostMapping
-    public ResponseEntity<Response> saveOrUpdateUser(User user, Long authorityId) {
-        List<Authority> authorities =new ArrayList<>();
+    public ResponseEntity<Response> create(User user, Long authorityId) {
+        List<Authority> authorities = new ArrayList<>();
         authorities.add(authorityService.getAuthorityById(authorityId));
         user.setAuthorities(authorities);
 
+        if (user.getId() == null) {
+            user.setEncodePassword(user.getPassword()); // set the encoded password.
+        } else {
+            // verify if the password changed.
+            User originalUser = userService.getUserById(user.getId());
+            String rawPassword = originalUser.getPassword();
+            PasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodePasswd = encoder.encode(user.getPassword());
+            boolean isMatch = encoder.matches(rawPassword, encodePasswd);
+            if (!isMatch) {
+                user.setEncodePassword(user.getPassword());
+            } else {
+                user.setPassword(user.getPassword());
+            }
+        }
+
         try {
-            userService.saveOrUpdateUser(user);
+            userService.saveUser(user);
         } catch (ConstraintViolationException e) {
             return ResponseEntity.ok().body(new Response(false, ConstraintViolationExceptionHandler.getMessage(e)));
         }
-        return ResponseEntity.ok().body(new Response(true, "process success.", user));
+
+        return ResponseEntity.ok().body(new Response(true, "the user has been saved.", user));
     }
 
     /**
      * delete the user.
      *
      * @param id
-     * @param model
      * @return
      */
     @DeleteMapping(value = "/{id}")
@@ -99,11 +126,11 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.ok().body(new Response(false, e.getMessage()));
         }
-        return ResponseEntity.ok().body(new Response(true, "successfully delete the user."));
+        return ResponseEntity.ok().body(new Response(true, "the user has been deleted."));
     }
 
     /**
-     * get the user edit form.
+     * get the modification page and user data.
      *
      * @param id
      * @param model
