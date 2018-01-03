@@ -22,9 +22,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * User Controller.
- */
+
 @RestController
 @RequestMapping("/users")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")  // only the Admin can access the page.
@@ -60,6 +58,7 @@ public class UserController {
         model.addAttribute("page", page);
         model.addAttribute("userList", list);
         // if sync (first time visit) then load the whole page, otherwise, only reload the certain <div>.
+        async = false;
         return new ModelAndView(async == true ? "users/list :: #mainContainerRepleace" : "users/list", "userModel", model);
     }
 

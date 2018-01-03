@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AAdmin Controller.
+ * Admin Controller.
  */
 @Controller
 @RequestMapping("/admins")

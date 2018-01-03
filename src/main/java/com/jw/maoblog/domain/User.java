@@ -16,28 +16,29 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class User implements UserDetails, Serializable{
-    private static final long serialVersionId = 1L;
+public class User implements UserDetails, Serializable {
 
-    @Id // primary key
+    private static final long serialVersionUID = 1L;
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto generate id
-    private long id;
+    private Long id;
 
     @NotEmpty(message = "nickname cannot be empty.")
-    @Size(min=5, max=20)
-    @Column(nullable = false, length=20) // cannot be empty, max long 20.
+    @Size(min=2, max=20)
+    @Column(nullable = false, length = 20) // cannot be empty, max long 20.
     private String name;
 
     @NotEmpty(message = "email cannot be empty.")
     @Size(max=50)
-    @Email(message="please input an valid email.")
+    @Email(message= "email is in invalid format." )
     @Column(nullable = false, length = 50, unique = true)
     private String email;
 
     @NotEmpty(message = "username cannot be empty.")
     @Size(min=3, max=20)
     @Column(nullable = false, length = 20, unique = true)
-    private String username; // the login name.
+    private String username; // 用户账号，用户登录时的唯一标识
 
     @NotEmpty(message = "password cannot be empty.")
     @Size(max=100)
@@ -55,7 +56,7 @@ public class User implements UserDetails, Serializable{
     protected User() {
     }
 
-    public User(String name, String email, String username, String password) {
+    public User(String name, String email,String username,String password) {
         this.name = name;
         this.email = email;
         this.username = username;
@@ -66,7 +67,7 @@ public class User implements UserDetails, Serializable{
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -86,37 +87,6 @@ public class User implements UserDetails, Serializable{
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEncodePassword(String password) {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodePasswd = encoder.encode(password);
-        this.password = encodePasswd;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // transform List<Authority> into List<SimpleGrantedAuthority>, or say transform the collection to string for display.
         List<SimpleGrantedAuthority> simpleAuthorities = new ArrayList<>();
@@ -128,6 +98,38 @@ public class User implements UserDetails, Serializable{
 
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEncodePassword(String password) {
+        PasswordEncoder  encoder = new BCryptPasswordEncoder();
+        String encodePasswd = encoder.encode(password);
+        this.password = encodePasswd;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override
