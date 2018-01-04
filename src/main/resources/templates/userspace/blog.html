@@ -28,7 +28,7 @@
                         </a>
                     </h2>
                     <div class="card-text">
-                        posted by <a href="/u/jasonw" th:href="'/u/' + ${blogModel.user.username}" class="card-link" th:text="${blogModel.user.username}" >jasonw</a> at [[${#dates.format(blogModel.createTime, 'HH:mm yyyy-MM-dd')}]]
+                        posted by <a href="/u/jasonw" th:href="'/u/' + ${blogModel.user.username}" class="card-link" th:text="${originalName}" >jasonw</a> at [[${#dates.format(blogModel.createTime, 'HH:mm yyyy-MM-dd')}]]
                         	<i class="fa fa-eye" aria-hidden="true">[[${blogModel.readSize}]]</i>
 		                    <i class="fa fa-heart-o" aria-hidden="true">[[${blogModel.voteSize}]]</i> 
 		                    <i class="fa fa-comment-o" aria-hidden="true">[[${blogModel.commentSize}]]</i>

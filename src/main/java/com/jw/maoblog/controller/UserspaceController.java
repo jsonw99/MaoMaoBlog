@@ -14,6 +14,7 @@ import com.jw.maoblog.service.UserService;
 import com.jw.maoblog.util.ConstraintViolationExceptionHandler;
 import com.jw.maoblog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +55,9 @@ public class UserspaceController {
     @Autowired
     private CatalogService catalogService;
 
+    @Value("${file.server.url}")
+    private String fileServerUrl;
+
 
     @GetMapping("/{username}")
     public String userSpace(@PathVariable("username") String username, Model model) {
@@ -67,6 +71,7 @@ public class UserspaceController {
     public ModelAndView profile(@PathVariable("username") String username, Model model) {
         User user = (User) userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
+        model.addAttribute("fileServerUrl", fileServerUrl);
         return new ModelAndView("/userspace/profile", "userModel", model);
     }
 
@@ -132,7 +137,6 @@ public class UserspaceController {
         return ResponseEntity.ok().body(new Response(true, "avatar saved.", avatarUrl));
     }
 
-
     @GetMapping("/{username}/blogs")
     public String listBlogsByOrder(@PathVariable("username") String username,
                                    @RequestParam(value = "order", required = false, defaultValue = "new") String order,
@@ -183,6 +187,7 @@ public class UserspaceController {
     @GetMapping("/{username}/blogs/{id}")
     public String getBlogById(@PathVariable("username") String username, @PathVariable("id") Long id, Model model) {
         User principal = null;
+        User originalposter = userService.getUserByUserName(username);
         Blog blog = blogService.getBlogById(id);
 
         // every time load, increase the number or views.
@@ -211,6 +216,7 @@ public class UserspaceController {
             }
         }
 
+        model.addAttribute("originalName", originalposter.getName());
         model.addAttribute("isBlogOwner", isBlogOwner);
         model.addAttribute("blogModel", blog);
         model.addAttribute("currentVote", currentVote);

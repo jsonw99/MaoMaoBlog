@@ -28,12 +28,14 @@ public interface UserService {
 
     /**
      * remove the users within the given list.
+     *
      * @param users
      */
     void removeUsersInBatch(List<User> users);
 
     /**
      * update the user.
+     *
      * @param user
      * @return
      */
@@ -41,19 +43,30 @@ public interface UserService {
 
     /**
      * get user by userId
+     *
      * @param id
      * @return
      */
     User getUserById(Long id);
 
     /**
+     * get user by userNmae
+     *
+     * @param username
+     * @return
+     */
+    User getUserByUserName(String username);
+
+    /**
      * return the list of all users
+     *
      * @return
      */
     List<User> listUsers();
 
     /**
      * return the list of users based on the fuzzy search query.
+     *
      * @param name
      * @param pageable
      * @return
@@ -62,6 +75,7 @@ public interface UserService {
 
     /**
      * return the list of users matches the given usernames collection.
+     *
      * @param usernames
      * @return
      */
