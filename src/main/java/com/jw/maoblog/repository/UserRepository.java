@@ -21,6 +21,14 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Page<User> findByNameLike(String name, Pageable pageable);
 
     /**
+     * fuzzy search on the user's name and username, return pageable result.
+     * @param name
+     * @param username
+     * @param pageable
+     * @return
+     */
+    Page<User> findByNameLikeOrUsernameLike(String name, String username, Pageable pageable);
+    /**
      * return the user match the given username.
      * @param username
      * @return

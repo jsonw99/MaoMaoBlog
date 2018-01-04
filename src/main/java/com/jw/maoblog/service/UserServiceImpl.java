@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Page<User> listUsersByNameLike(String name, Pageable pageable) {
         // fuzzy search
         name = "%" + name + "%";
-        Page<User> users = userRepository.findByNameLike(name, pageable);
+        Page<User> users = userRepository.findByNameLikeOrUsernameLike(name, name, pageable);
         return users;
     }
 
