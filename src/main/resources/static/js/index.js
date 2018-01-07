@@ -40,7 +40,7 @@ $(function () {
         _pageSize = pageSize;
     });
 
-    // search the key word.
+    // search by the key word.
     $("#indexsearch").click(function () {
         getBlogsByName(0, _pageSize);
     });
@@ -50,7 +50,7 @@ $(function () {
 
         var url = $(this).attr("url");
 
-        // firstly move the style on both buttos, then add active style on the selected one.
+        // firstly move the style on both buttons, then add active style on the selected one.
         $(".nav-item .nav-link").removeClass("active");
         $(this).addClass("active");
 

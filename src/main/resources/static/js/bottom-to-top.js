@@ -1,5 +1,5 @@
 "use strict";
-//# sourceURL=main.js
+//# sourceURL=bottom-to-top.js
 
 // execute after loading DOM
 $(function () {
