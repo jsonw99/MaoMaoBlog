@@ -21,11 +21,11 @@
                             <h2 class="card-title">
 		                 		<span>
 				                  <a href="/u/jasonw" title="jasonw" th:href="'/u/' + ${blog.username}"
-                                     th:title="${blog.username}"/>
+                                     th:title="${blog.username}">
 				                    <img src="/images/avatar-defualt.jpg"
                                          th:src="${blog.avatar} == null ? '/images/avatar-defualt.jpg' : ${blog.avatar}"
-                                         class="blog-avatar-50">
-                                    </a>
+                                         class="blog-avatar-50" />
+                                  </a>
 						        </span>
                                 <a href="/u/jasonw/blogs/1" class="card-link" title="jasonw"
                                    th:href="'/u/' + ${blog.username} + '/blogs/'+ ${blog.blogId}"
@@ -36,7 +36,7 @@
                             <p class="card-text" th:text="${blog.summary}">some blog summary</p>
                             <div class="card-text">
                                 posted by <a href="/u/jasonw" th:href="'/u/' + ${blog.username}" class="card-link"
-                                             th:text=${blog.username}>jasonw</a> at [[${#dates.format(blog.createTime,
+                                             th:text=${blog.name}>jasonw</a> at [[${#dates.format(blog.createTime,
                                 'HH:mm yyyy-MM-dd')}]]
                                 <i class="fa fa-eye" aria-hidden="true">[[${blog.readSize}]]</i>
                                 <i class="fa fa-heart-o" aria-hidden="true">[[${blog.voteSize}]]</i>

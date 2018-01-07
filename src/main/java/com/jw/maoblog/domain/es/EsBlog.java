@@ -33,6 +33,8 @@ public class EsBlog implements Serializable {
     @Field(index = FieldIndex.not_analyzed)  // not a full text search field.
     private String username;
     @Field(index = FieldIndex.not_analyzed)  // not a full text search field.
+    private String name;
+    @Field(index = FieldIndex.not_analyzed)  // not a full text search field.
     private String avatar;
     @Field(index = FieldIndex.not_analyzed)  // not a full text search field.
     private Timestamp createTime;
@@ -53,13 +55,14 @@ public class EsBlog implements Serializable {
         this.content = content;
     }
 
-    public EsBlog(Long blogId, String title, String summary, String content, String username, String avatar, Timestamp createTime,
+    public EsBlog(Long blogId, String title, String summary, String content, String username, String name, String avatar, Timestamp createTime,
                   Integer readSize, Integer commentSize, Integer voteSize, String tags) {
         this.blogId = blogId;
         this.title = title;
         this.summary = summary;
         this.content = content;
         this.username = username;
+        this.name = name;
         this.avatar = avatar;
         this.createTime = createTime;
         this.readSize = readSize;
@@ -74,6 +77,7 @@ public class EsBlog implements Serializable {
         this.summary = blog.getSummary();
         this.content = blog.getContent();
         this.username = blog.getUser().getUsername();
+        this.name = blog.getUser().getName();
         this.avatar = blog.getUser().getAvatar();
         this.createTime = blog.getCreateTime();
         this.readSize = blog.getReadSize();
@@ -88,6 +92,7 @@ public class EsBlog implements Serializable {
         this.summary = blog.getSummary();
         this.content = blog.getContent();
         this.username = blog.getUser().getUsername();
+        this.name = blog.getUser().getName();
         this.avatar = blog.getUser().getAvatar();
         this.createTime = blog.getCreateTime();
         this.readSize = blog.getReadSize();
@@ -190,6 +195,14 @@ public class EsBlog implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

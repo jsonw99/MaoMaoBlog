@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe().key(KEY) // activate remember me
                 .and().exceptionHandling().accessDeniedPage("/403");  // handler the exception，if denny access then redirect to 403 page.
         http.csrf().ignoringAntMatchers("/h2-console/**"); // do not use CSRF on H2 console
+        // by default, CSRF(Cross-Site Request Forgery) prevention is activate.
         http.headers().frameOptions().sameOrigin(); // allow the H2 queries from the same source
     }
 

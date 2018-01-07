@@ -187,7 +187,6 @@ public class UserspaceController {
     @GetMapping("/{username}/blogs/{id}")
     public String getBlogById(@PathVariable("username") String username, @PathVariable("id") Long id, Model model) {
         User principal = null;
-        User originalposter = userService.getUserByUserName(username);
         Blog blog = blogService.getBlogById(id);
 
         // every time load, increase the number or views.
@@ -216,7 +215,7 @@ public class UserspaceController {
             }
         }
 
-        model.addAttribute("originalName", originalposter.getName());
+        model.addAttribute("originalName", blog.getUser().getName());
         model.addAttribute("isBlogOwner", isBlogOwner);
         model.addAttribute("blogModel", blog);
         model.addAttribute("currentVote", currentVote);

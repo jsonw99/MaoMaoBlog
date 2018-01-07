@@ -76,7 +76,8 @@ public class BlogController {
             List<User> users = esBlogService.listTop12Users();
             model.addAttribute("users", users);
         }
-
+        // if async, only refresh the content within the div with the id "mainContainerRepleace".
+        // ow, refresh the whole page.
         return (async == true ? "/index :: #mainContainerRepleace" : "/index");
     }
 
